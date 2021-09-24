@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "dripstone_fluid_lib",
+  "id": "dripstone_fluid_lib_test",
   "version": "${version}",
-  "name": "Dripstone Fluid Lib",
+  "name": "Dripstone Fluid Lib Test Mod",
   "description": "Allows for modded fluids to interact with dripstone easily.",
   "authors": [
     "Tropheus Jay"
@@ -11,15 +11,17 @@
     "sources": "https://github.com/TropheusJ/dripstone-fluid-lib"
   },
   "license": "MIT",
-  "icon": "assets/dripstone_fluid_lib/icon.png",
+  "icon": "assets/dripstone_fluid_lib_test/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.tropheusj.dripstone_fluid_lib.DripstoneFluidLib"
+      "io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod"
+    ],
+    "client": [
+      "io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestModClient"
     ]
   },
   "mixins": [
-    "dripstone_fluid_lib.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.11.6",
