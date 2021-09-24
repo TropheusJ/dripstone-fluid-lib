@@ -85,7 +85,7 @@ public abstract class PointedDripstoneBlockMixin {
 		Fluid fluid = getDripFluid(world, pos);
 		float fluidDripChance;
 		if (fluid instanceof DripstoneInteractingFluid dripFluid) {
-			fluidDripChance = dripFluid.getFluidDripChance();
+			fluidDripChance = dripFluid.getFluidDripChance(state, world, pos);
 		} else if (fluid == Fluids.WATER) {
 			fluidDripChance = DripstoneInteractingFluid.WATER_DRIP_CHANCE;
 		} else if (fluid == Fluids.LAVA) {
@@ -124,7 +124,7 @@ public abstract class PointedDripstoneBlockMixin {
 		Fluid dripFluid = getDripFluid(world, fluid);
 		ParticleEffect particleEffect;
 		if (dripFluid instanceof DripstoneInteractingFluid dripstoneFluid) {
-			particleEffect = dripstoneFluid.getParticleEffect();
+			particleEffect = dripstoneFluid.getParticleEffect(world, pos, state);
 		} else {
 			particleEffect = dripFluid.isIn(FluidTags.LAVA) ? ParticleTypes.DRIPPING_DRIPSTONE_LAVA : ParticleTypes.DRIPPING_DRIPSTONE_WATER;
 		}
@@ -140,7 +140,7 @@ public abstract class PointedDripstoneBlockMixin {
 		Fluid fluid = fluidState.getFluidState().getFluid();
 		boolean growsDripstone = fluidState.isOf(Blocks.WATER);
 		if (fluid instanceof DripstoneInteractingFluid interactingFluid) {
-			growsDripstone = interactingFluid.growsDripstone();
+			growsDripstone = interactingFluid.growsDripstone(fluidState);
 		}
 
 		return dripstoneBlockState.isOf(Blocks.DRIPSTONE_BLOCK) && growsDripstone && fluidState.getFluidState().isStill();

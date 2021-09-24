@@ -20,10 +20,10 @@ public class CauldronBlockMixin {
 	@Inject(at = @At("HEAD"), method = "fillFromDripstone")
 	protected void dripstone_fluid_lib$fillFromDripstone(BlockState state, World world, BlockPos pos, Fluid fluid, CallbackInfo ci) {
 		if (fluid instanceof DripstoneInteractingFluid interactingFluid) {
-			BlockState cauldronBlock = interactingFluid.getCauldronBlockState();
+			BlockState cauldronBlock = interactingFluid.getCauldronBlockState(state, world, pos);
 			if (cauldronBlock != null) {
 				world.setBlockState(pos, cauldronBlock);
-				world.syncWorldEvent(interactingFluid.getFluidDripWorldEvent(), pos, 0);
+				world.syncWorldEvent(interactingFluid.getFluidDripWorldEvent(state, world, pos), pos, 0);
 				world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
 			}
 		}

@@ -12,6 +12,8 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
 
@@ -44,28 +46,27 @@ public abstract class Fluid extends AbstractFluid implements DripstoneInteractin
 	}
 
 	@Override
-	public float getFluidDripChance() {
+	public float getFluidDripChance(BlockState state, World world, BlockPos pos) {
 		return WATER_DRIP_CHANCE;
 	}
 
 	@Override
-	public ParticleEffect getParticleEffect() {
+	public ParticleEffect getParticleEffect(World world, BlockPos pos, BlockState state) {
 		return ParticleTypes.DRIPPING_DRIPSTONE_WATER;
 	}
 
 	@Override
-	@Nullable
-	public BlockState getCauldronBlockState() {
+	public @Nullable BlockState getCauldronBlockState(BlockState state, World world, BlockPos cauldronPos) {
 		return Blocks.DIRT.getDefaultState();
 	}
 
 	@Override
-	public int getFluidDripWorldEvent() {
+	public int getFluidDripWorldEvent(BlockState state, World world, BlockPos cauldronPos) {
 		return WorldEvents.POINTED_DRIPSTONE_DRIPS_WATER_INTO_CAULDRON;
 	}
 
 	@Override
-	public boolean growsDripstone() {
+	public boolean growsDripstone(BlockState state) {
 		return true;
 	}
 
