@@ -16,11 +16,15 @@
   "entrypoints": {
     "main": [
       "io.github.tropheusj.dripstone_fluid_lib.DripstoneFluidLib"
+    ],
+    "client": [
+      "io.github.tropheusj.dripstone_fluid_lib.DripstoneFluidLibClient"
     ]
   },
   "mixins": [
     "dripstone_fluid_lib.mixins.json"
   ],
+  "accessWidener": "dripstone_fluid_lib.accessWidener",
   "depends": {
     "fabricloader": ">=0.11.6",
     "fabric": "*",

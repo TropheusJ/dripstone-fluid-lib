@@ -1,10 +1,15 @@
-# Fabric Example Mod
+# Dripstone Fluid Lib
 
 ## Setup
+```groovy
+maven {
+    url = "https://maven.devos.community/releases/"
+}
+```
+```groovy
+modImplimentation "io.github.tropheusj:dripstone_fluid_lib:1.0.0"
+```
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the
-IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+## Use
+Using this lib is as simple as implementing the `DripstoneInteractingFluid`
+interface onto your fluid class. See the javadoc for each method on use.

@@ -1,5 +1,8 @@
 package io.github.tropheusj.dripstone_fluid_lib_test;
 
+import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.FLOWING_FLUID;
+import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.STILL_FLUID;
+
 import java.util.function.Function;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -21,9 +24,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.BlockRenderView;
-
-import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.FLOWING_FLUID;
-import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.STILL_FLUID;
 
 public class DripstoneFluidLibTestModClient implements ClientModInitializer {
 

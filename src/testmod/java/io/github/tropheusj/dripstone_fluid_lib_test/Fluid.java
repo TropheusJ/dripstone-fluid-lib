@@ -1,23 +1,23 @@
 package io.github.tropheusj.dripstone_fluid_lib_test;
 
-import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.*;
+import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.BUCKET;
+import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.FLOWING_FLUID;
+import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.FLUID;
+import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.STILL_FLUID;
+
+import org.jetbrains.annotations.Nullable;
 
 import io.github.tropheusj.dripstone_fluid_lib.DripstoneInteractingFluid;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
-
-import org.jetbrains.annotations.Nullable;
 
 public abstract class Fluid extends AbstractFluid implements DripstoneInteractingFluid {
 	@Override
@@ -51,13 +51,8 @@ public abstract class Fluid extends AbstractFluid implements DripstoneInteractin
 	}
 
 	@Override
-	public ParticleEffect getParticleEffect(World world, BlockPos pos, BlockState state) {
-		return ParticleTypes.DRIPPING_DRIPSTONE_WATER;
-	}
-
-	@Override
 	public @Nullable BlockState getCauldronBlockState(BlockState state, World world, BlockPos cauldronPos) {
-		return Blocks.DIRT.getDefaultState();
+		return Blocks.CAULDRON.getDefaultState();
 	}
 
 	@Override
@@ -68,6 +63,11 @@ public abstract class Fluid extends AbstractFluid implements DripstoneInteractin
 	@Override
 	public boolean growsDripstone(BlockState state) {
 		return true;
+	}
+
+	@Override
+	public int getParticleColor(World world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+		return 0x00A86B;
 	}
 
 	public static class Flowing extends Fluid {

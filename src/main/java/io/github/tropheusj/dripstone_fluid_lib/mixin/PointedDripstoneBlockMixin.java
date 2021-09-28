@@ -1,30 +1,6 @@
 package io.github.tropheusj.dripstone_fluid_lib.mixin;
 
-import com.google.common.annotations.VisibleForTesting;
-
-import io.github.tropheusj.dripstone_fluid_lib.DripstoneInteractingFluid;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.AbstractCauldronBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PointedDripstoneBlock;
-
-import net.minecraft.fluid.Fluid;
-
-import net.minecraft.fluid.Fluids;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.tag.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldEvents;
-
-import net.minecraft.world.WorldView;
+import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Dynamic;
@@ -34,7 +10,25 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.util.Optional;
+import com.google.common.annotations.VisibleForTesting;
+
+import io.github.tropheusj.dripstone_fluid_lib.DripstoneFluidLib;
+import io.github.tropheusj.dripstone_fluid_lib.DripstoneInteractingFluid;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.PointedDripstoneBlock;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.FluidTags;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldEvents;
+import net.minecraft.world.WorldView;
 
 @Mixin(PointedDripstoneBlock.class)
 public abstract class PointedDripstoneBlockMixin {
@@ -123,8 +117,8 @@ public abstract class PointedDripstoneBlockMixin {
 		double z = pos.getZ() + 0.5 + modelOffset.z;
 		Fluid dripFluid = getDripFluid(world, fluid);
 		ParticleEffect particleEffect;
-		if (dripFluid instanceof DripstoneInteractingFluid dripstoneFluid) {
-			particleEffect = dripstoneFluid.getParticleEffect(world, pos, state);
+		if (dripFluid instanceof DripstoneInteractingFluid interactingFluid) {
+			particleEffect = DripstoneFluidLib.FLUIDS_TO_PARTICLES.get(interactingFluid).getA(); // hang
 		} else {
 			particleEffect = dripFluid.isIn(FluidTags.LAVA) ? ParticleTypes.DRIPPING_DRIPSTONE_LAVA : ParticleTypes.DRIPPING_DRIPSTONE_WATER;
 		}

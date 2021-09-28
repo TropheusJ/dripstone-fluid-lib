@@ -5,9 +5,15 @@
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "CauldronBlockMixin",
-    "PointedDripstoneBlockMixin"
+    "PointedDripstoneBlockMixin",
+    "RegistryMixin"
   ],
   "client": [
+    "ClientRegistryMixin",
+    "MinecraftClientMixin",
+    "ParticleManagerAccessor",
+    "ParticleManagerMixin",
+    "WaterSplashParticle$SplashFactoryAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

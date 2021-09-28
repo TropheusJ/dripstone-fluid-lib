@@ -1,19 +1,17 @@
 package io.github.tropheusj.dripstone_fluid_lib.mixin;
 
-import io.github.tropheusj.dripstone_fluid_lib.DripstoneInteractingFluid;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CauldronBlock;
-
-import net.minecraft.fluid.Fluid;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import net.minecraft.world.event.GameEvent;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import io.github.tropheusj.dripstone_fluid_lib.DripstoneInteractingFluid;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CauldronBlock;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 @Mixin(CauldronBlock.class)
 public class CauldronBlockMixin {

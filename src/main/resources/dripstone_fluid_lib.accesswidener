@@ -1,0 +1,7 @@
+accessWidener	v1	named
+accessible class net/minecraft/client/particle/BlockLeakParticle$DripstoneLavaDrip
+accessible method net/minecraft/client/particle/BlockLeakParticle$DripstoneLavaDrip <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/fluid/Fluid;Lnet/minecraft/particle/ParticleEffect;)V
+accessible class net/minecraft/client/particle/BlockLeakParticle$Dripping
+accessible method net/minecraft/client/particle/BlockLeakParticle$Dripping <init> (Lnet/minecraft/client/world/ClientWorld;DDDLnet/minecraft/fluid/Fluid;Lnet/minecraft/particle/ParticleEffect;)V
+accessible class net/minecraft/client/particle/ParticleManager$SpriteAwareFactory
+accessible method net/minecraft/client/particle/WaterSplashParticle <init> (Lnet/minecraft/client/world/ClientWorld;DDDDDD)V

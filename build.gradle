@@ -47,6 +47,7 @@ loom {
             source sourceSets.testmod
         }
     }
+    accessWidenerPath = file("src/main/resources/dripstone_fluid_lib.accesswidener")
 }
 
 processResources {
