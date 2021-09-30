@@ -24,7 +24,7 @@
   "mixins": [
     "dripstone_fluid_lib.mixins.json"
   ],
-  "accessWidener": "dripstone_fluid_lib.accessWidener",
+  "accessWidener": "dripstone_fluid_lib.accesswidener",
   "depends": {
     "fabricloader": ">=0.11.6",
     "fabric": "*",
