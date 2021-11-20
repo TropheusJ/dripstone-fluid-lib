@@ -141,8 +141,7 @@ public abstract class PointedDripstoneBlockMixin {
 	}
 
 	// isFluidLiquid lambda in randomDisplayTick
-	@Dynamic
-	@Redirect(method = "method_33270", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/PointedDripstoneBlock;isFluidLiquid(Lnet/minecraft/fluid/Fluid;)Z"), remap = false)
+	@Redirect(method = "method_33270", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/PointedDripstoneBlock;isFluidLiquid(Lnet/minecraft/fluid/Fluid;)Z"))
 	private static boolean dripstone_fluid_lib$redirectFluidCheck(Fluid fluid) {
 		return fluid != null;
 	}
