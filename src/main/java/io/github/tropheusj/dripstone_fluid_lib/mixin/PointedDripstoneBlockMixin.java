@@ -97,7 +97,7 @@ public abstract class PointedDripstoneBlockMixin {
 							int i = blockPos.getY() - blockPos2.getY();
 							int j = 50 + i;
 							BlockState blockState = world.getBlockState(blockPos2);
-							world.getBlockTickScheduler().schedule(blockPos2, blockState.getBlock(), j);
+							world.createAndScheduleBlockTick(blockPos2, blockState.getBlock(), j);
 						}
 					}
 				}
@@ -142,7 +142,7 @@ public abstract class PointedDripstoneBlockMixin {
 
 	// isFluidLiquid lambda in randomDisplayTick
 	@Dynamic
-	@Redirect(method = "method_33270", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/PointedDripstoneBlock;isFluidLiquid(Lnet/minecraft/fluid/Fluid;)Z"))
+	@Redirect(method = "method_33270", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/PointedDripstoneBlock;isFluidLiquid(Lnet/minecraft/fluid/Fluid;)Z"), remap = false)
 	private static boolean dripstone_fluid_lib$redirectFluidCheck(Fluid fluid) {
 		return fluid != null;
 	}

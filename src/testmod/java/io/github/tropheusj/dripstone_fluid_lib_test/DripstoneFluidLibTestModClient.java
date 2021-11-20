@@ -1,7 +1,8 @@
 package io.github.tropheusj.dripstone_fluid_lib_test;
 
-import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.FLOWING_FLUID;
-import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.STILL_FLUID;
+import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.FLOWING;
+import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.STILL;
+import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.id;
 
 import java.util.function.Function;
 
@@ -20,6 +21,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -78,7 +80,13 @@ public class DripstoneFluidLibTestModClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		setupFluidRendering(STILL_FLUID, FLOWING_FLUID, new Identifier("minecraft", "water"), 0x00A86B);
-		BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), STILL_FLUID, FLOWING_FLUID);
+		for (DyeColor dye : DyeColor.values()) {
+			String name = dye.getName();
+			Fluid still = STILL.get(id(name + "_still"));
+			Fluid flowing = FLOWING.get(id(name + "_flowing"));
+			int color = dye.getFireworkColor();
+			setupFluidRendering(still, flowing, new Identifier("minecraft", "water"), color);
+			BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), still, flowing);
+		}
 	}
 }

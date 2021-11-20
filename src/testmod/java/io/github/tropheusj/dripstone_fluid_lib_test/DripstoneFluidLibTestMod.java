@@ -10,23 +10,47 @@ import net.minecraft.block.MapColor;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DripstoneFluidLibTestMod implements ModInitializer {
 	public static final String ID = "dripstone_fluid_lib_test";
-	public static FlowableFluid STILL_FLUID;
-	public static FlowableFluid FLOWING_FLUID;
-	public static Block FLUID;
-	public static Item BUCKET;
+	public static Map<Identifier, FlowableFluid> STILL = new HashMap<>(16);
+	public static Map<Identifier, FlowableFluid> FLOWING = new HashMap<>(16);
+	public static Map<Identifier, FluidBlock> FLUID = new HashMap<>(16);
+	public static Map<Identifier, Item> BLUCKET = new HashMap<>(16);
 
 	@Override
 	public void onInitialize() {
-		STILL_FLUID = Registry.register(Registry.FLUID, id("fluid"), new Fluid.Still());
-		FLOWING_FLUID = Registry.register(Registry.FLUID, id("flowing_fluid"), new Fluid.Flowing());
-		FLUID = Registry.register(Registry.BLOCK, id("fluid_block"),
-				new FluidBlock(STILL_FLUID, FabricBlockSettings.copy(Blocks.WATER).mapColor(MapColor.WHITE)){});
-		BUCKET = Registry.register(Registry.ITEM, id("fluid_bucket"), new BucketItem(STILL_FLUID, new FabricItemSettings()));
+		for (DyeColor color : DyeColor.values()) {
+			String name = color.getName();
+			Identifier still = id(name + "_still");
+			Identifier flowing = id(name + "_flowing");
+			Identifier fluid = id(name + "_fluid");
+			Identifier bucket = id(name + "_bucket");
+
+			Fluid stillFluid = new Fluid.Still(name, color.getFireworkColor());
+			Fluid flowingFluid = new Fluid.Flowing(name, color.getFireworkColor());
+			stillFluid.flowing = flowingFluid;
+			flowingFluid.still = stillFluid;
+
+			FluidBlock block = new FluidBlock(stillFluid, FabricBlockSettings.copyOf(Blocks.WATER)){};
+			stillFluid.block = block;
+			flowingFluid.block = block;
+
+			BucketItem bucketItem = new BucketItem(stillFluid, new FabricItemSettings());
+			stillFluid.bucket = bucketItem;
+			flowingFluid.bucket = bucketItem;
+
+			STILL.put(still, Registry.register(Registry.FLUID, still, stillFluid));
+			FLOWING.put(flowing, Registry.register(Registry.FLUID, flowing, flowingFluid));
+			FLUID.put(fluid, Registry.register(Registry.BLOCK, fluid, block));
+			BLUCKET.put(bucket, Registry.register(Registry.ITEM, bucket, bucketItem));
+		}
 	}
 
 	public static Identifier id(String path) {

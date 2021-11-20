@@ -1,9 +1,11 @@
 package io.github.tropheusj.dripstone_fluid_lib_test;
 
-import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.BUCKET;
-import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.FLOWING_FLUID;
 import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.FLUID;
-import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.STILL_FLUID;
+
+import net.minecraft.block.FluidBlock;
+import net.minecraft.util.Identifier;
+
+import net.minecraft.util.registry.Registry;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -20,19 +22,26 @@ import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
 
 public abstract class Fluid extends AbstractFluid implements DripstoneInteractingFluid {
+	public String baseName;
+	public int color;
+	public net.minecraft.fluid.Fluid still;
+	public net.minecraft.fluid.Fluid flowing;
+	public Item bucket;
+	public FluidBlock block;
+
 	@Override
 	public net.minecraft.fluid.Fluid getStill() {
-		return STILL_FLUID;
+		return still;
 	}
 
 	@Override
 	public net.minecraft.fluid.Fluid getFlowing() {
-		return FLOWING_FLUID;
+		return flowing;
 	}
 
 	@Override
 	public Item getBucketItem() {
-		return BUCKET;
+		return bucket;
 	}
 
 	@Override
@@ -42,7 +51,7 @@ public abstract class Fluid extends AbstractFluid implements DripstoneInteractin
 
 	@Override
 	protected BlockState toBlockState(FluidState fluidState) {
-		return FLUID.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
+		return block.getDefaultState().with(Properties.LEVEL_15, getBlockStateLevel(fluidState));
 	}
 
 	@Override
@@ -67,10 +76,16 @@ public abstract class Fluid extends AbstractFluid implements DripstoneInteractin
 
 	@Override
 	public int getParticleColor(World world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-		return 0x00A86B;
+		return color;
 	}
 
 	public static class Flowing extends Fluid {
+		public Flowing(String baseName, int color) {
+			this.baseName = baseName;
+			this.color = color;
+			this.flowing = this;
+		}
+
 		@Override
 		protected void appendProperties(StateManager.Builder<net.minecraft.fluid.Fluid, FluidState> builder) {
 			super.appendProperties(builder);
@@ -89,6 +104,12 @@ public abstract class Fluid extends AbstractFluid implements DripstoneInteractin
 	}
 
 	public static class Still extends Fluid {
+		public Still(String baseName, int color) {
+			this.baseName = baseName;
+			this.color = color;
+			this.still = this;
+		}
+
 		@Override
 		public int getLevel(FluidState fluidState) {
 			return 8;
