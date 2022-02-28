@@ -1,13 +1,14 @@
 package io.github.tropheusj.dripstone_fluid_lib.mixin;
 
+import io.github.tropheusj.dripstone_fluid_lib.Constants;
+import io.github.tropheusj.dripstone_fluid_lib.ParticleTypeSet;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import io.github.tropheusj.dripstone_fluid_lib.DripstoneFluidLib;
 import io.github.tropheusj.dripstone_fluid_lib.DripstoneInteractingFluid;
-import io.github.tropheusj.dripstone_fluid_lib.Triplet;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.Identifier;
@@ -27,7 +28,7 @@ public class RegistryMixin {
 			DefaultParticleType splash = Registry.register(Registry.PARTICLE_TYPE,
 					new Identifier(id.getNamespace(), id.getPath() + "_dripstone_lib_particle_type_splash"),
 					FabricParticleTypes.simple());
-			DripstoneFluidLib.FLUIDS_TO_PARTICLES.put(interactingFluid, new Triplet<>(hang, fall, splash));
+			Constants.FLUIDS_TO_PARTICLES.put(interactingFluid, new ParticleTypeSet(hang, fall, splash));
 		}
 	}
 }

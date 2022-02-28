@@ -1,11 +1,6 @@
 package io.github.tropheusj.dripstone_fluid_lib_test;
 
-import static io.github.tropheusj.dripstone_fluid_lib_test.DripstoneFluidLibTestMod.FLUID;
-
 import net.minecraft.block.FluidBlock;
-import net.minecraft.util.Identifier;
-
-import net.minecraft.util.registry.Registry;
 
 import org.jetbrains.annotations.Nullable;
 

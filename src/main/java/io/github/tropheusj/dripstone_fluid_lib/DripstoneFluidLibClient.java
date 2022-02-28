@@ -1,8 +1,5 @@
 package io.github.tropheusj.dripstone_fluid_lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,8 +9,6 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class DripstoneFluidLibClient implements ClientModInitializer {
-	public static final Set<DripstoneInteractingFluid> TO_REGISTER = new HashSet<>();
-
 	@Override
 	public void onInitializeClient() {
 		ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) -> {

@@ -10,14 +10,15 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 
 public interface DripstoneInteractingFluid {
-	float WATER_DRIP_CHANCE = 0.17578125F;
-	float LAVA_DRIP_CHANCE = 0.05859375F;
+	float WATER_DRIP_CHANCE = 0.17578125f;
+	float LAVA_DRIP_CHANCE = 0.05859375f;
 
 	/**
 	 * @see DripstoneInteractingFluid#WATER_DRIP_CHANCE
 	 * @see DripstoneInteractingFluid#LAVA_DRIP_CHANCE
 	 */
 	float getFluidDripChance(BlockState state, World world, BlockPos pos);
+
 	boolean growsDripstone(BlockState state);
 
 	/**
@@ -36,8 +37,8 @@ public interface DripstoneInteractingFluid {
 
 	/**
 	 * The world event triggered when a cauldron is filled with this fluid
-	 * Use {@link WorldEvents#POINTED_DRIPSTONE_DRIPS_WATER_INTO_CAULDRON} or
-	 * {@link WorldEvents#POINTED_DRIPSTONE_DRIPS_LAVA_INTO_CAULDRON} if you don't want to make your own
+	 * @see WorldEvents#POINTED_DRIPSTONE_DRIPS_WATER_INTO_CAULDRON
+	 * @see WorldEvents#POINTED_DRIPSTONE_DRIPS_LAVA_INTO_CAULDRON
 	 */
 	int getFluidDripWorldEvent(BlockState state, World world, BlockPos cauldronPos);
 }

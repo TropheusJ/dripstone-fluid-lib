@@ -12,5 +12,5 @@ import net.minecraft.client.particle.WaterSplashParticle;
 @Mixin(WaterSplashParticle.SplashFactory.class)
 public interface WaterSplashParticle$SplashFactoryAccessor {
 	@Accessor("spriteProvider")
-	SpriteProvider getSpriteProvider();
+	SpriteProvider dripstone_fluid_lib$spriteProvider();
 }

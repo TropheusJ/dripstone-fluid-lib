@@ -23,7 +23,7 @@ public class ParticleFactories {
 
 		@Override
 		public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-			BlockLeakParticle particle = new BlockLeakParticle.Dripping(clientWorld, x, y, z, Fluids.WATER, DripstoneFluidLib.FLUIDS_TO_PARTICLES.get(fluid).getB()); // falling
+			BlockLeakParticle particle = new BlockLeakParticle.Dripping(clientWorld, x, y, z, Fluids.WATER, Constants.FLUIDS_TO_PARTICLES.get(fluid).fall());
 			particle.setSprite(this.spriteProvider);
 			int color = fluid.getParticleColor(clientWorld, x, y, z, velocityX, velocityY, velocityZ);
 			float r = (color >> 16 & 255) / 255f;
@@ -45,7 +45,7 @@ public class ParticleFactories {
 		@Override
 		public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 			BlockLeakParticle particle = new BlockLeakParticle.DripstoneLavaDrip(clientWorld, x, y, z, Fluids.WATER,
-					DripstoneFluidLib.FLUIDS_TO_PARTICLES.get(fluid).getC()); // splash
+					Constants.FLUIDS_TO_PARTICLES.get(fluid).splash());
 			particle.setSprite(this.spriteProvider);
 			int color = fluid.getParticleColor(clientWorld, x, y, z, velocityX, velocityY, velocityZ);
 			float r = (color >> 16 & 255) / 255f;
@@ -67,7 +67,7 @@ public class ParticleFactories {
 		@Override
 		public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
 			WaterSplashParticle particle = new DripstoneFluidParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ);
-			particle.setSprite(((WaterSplashParticle$SplashFactoryAccessor) this).getSpriteProvider());
+			particle.setSprite(((WaterSplashParticle$SplashFactoryAccessor) this).dripstone_fluid_lib$spriteProvider());
 			int color = fluid.getParticleColor(clientWorld, x, y, z, velocityX, velocityY, velocityZ);
 			float r = (color >> 16 & 255) / 255f;
 			float g = (color >> 8 & 255) / 255f;

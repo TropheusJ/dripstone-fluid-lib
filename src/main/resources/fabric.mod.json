@@ -14,9 +14,6 @@
   "icon": "assets/dripstone_fluid_lib/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "io.github.tropheusj.dripstone_fluid_lib.DripstoneFluidLib"
-    ],
     "client": [
       "io.github.tropheusj.dripstone_fluid_lib.DripstoneFluidLibClient"
     ]

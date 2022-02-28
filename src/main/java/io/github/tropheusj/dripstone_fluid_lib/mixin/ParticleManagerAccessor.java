@@ -13,5 +13,5 @@ import net.minecraft.particle.ParticleType;
 @Mixin(ParticleManager.class)
 public interface ParticleManagerAccessor {
 	@Invoker("registerFactory")
-	<T extends ParticleEffect> void invokeRegisterFactory(ParticleType<T> type, ParticleManager.SpriteAwareFactory<T> factory);
+	<T extends ParticleEffect> void dripstone_fluid_lib$registerFactory(ParticleType<T> type, ParticleManager.SpriteAwareFactory<T> factory);
 }

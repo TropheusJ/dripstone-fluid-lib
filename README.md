@@ -3,11 +3,11 @@
 ## Setup
 ```groovy
 maven {
-    url = "https://maven.devos.community/releases/"
+    url = "https://maven.devos.community/snapshots/"
 }
 ```
 ```groovy
-modImplimentation "io.github.tropheusj:dripstone_fluid_lib:1.1.1"
+modImplimentation "io.github.tropheusj:dripstone_fluid_lib:1.2.0"
 ```
 
 ## Use

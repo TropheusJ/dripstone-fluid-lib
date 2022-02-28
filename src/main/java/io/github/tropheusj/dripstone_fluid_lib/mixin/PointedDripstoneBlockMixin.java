@@ -2,8 +2,9 @@ package io.github.tropheusj.dripstone_fluid_lib.mixin;
 
 import java.util.Optional;
 
+import io.github.tropheusj.dripstone_fluid_lib.Constants;
+
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import io.github.tropheusj.dripstone_fluid_lib.DripstoneFluidLib;
 import io.github.tropheusj.dripstone_fluid_lib.DripstoneInteractingFluid;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -118,7 +118,7 @@ public abstract class PointedDripstoneBlockMixin {
 		Fluid dripFluid = getDripFluid(world, fluid);
 		ParticleEffect particleEffect;
 		if (dripFluid instanceof DripstoneInteractingFluid interactingFluid) {
-			particleEffect = DripstoneFluidLib.FLUIDS_TO_PARTICLES.get(interactingFluid).getA(); // hang
+			particleEffect = Constants.FLUIDS_TO_PARTICLES.get(interactingFluid).hang();
 		} else {
 			particleEffect = dripFluid.isIn(FluidTags.LAVA) ? ParticleTypes.DRIPPING_DRIPSTONE_LAVA : ParticleTypes.DRIPPING_DRIPSTONE_WATER;
 		}
