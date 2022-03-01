@@ -7,7 +7,7 @@ maven {
 }
 ```
 ```groovy
-modImplimentation "io.github.tropheusj:dripstone_fluid_lib:1.2.0"
+modImplimentation "io.github.tropheusj:dripstone-fluid-lib:1.2.0"
 ```
 
 ## Use
