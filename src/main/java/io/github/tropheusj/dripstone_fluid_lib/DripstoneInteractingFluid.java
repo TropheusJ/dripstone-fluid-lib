@@ -1,5 +1,7 @@
 package io.github.tropheusj.dripstone_fluid_lib;
 
+import net.minecraft.block.PointedDripstoneBlock.DrippingFluid;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.block.AbstractCauldronBlock;
@@ -14,11 +16,15 @@ public interface DripstoneInteractingFluid {
 	float LAVA_DRIP_CHANCE = 0.05859375f;
 
 	/**
+	 * The chance for this fluid to drip from dripstone, between 0 and 1.
 	 * @see DripstoneInteractingFluid#WATER_DRIP_CHANCE
 	 * @see DripstoneInteractingFluid#LAVA_DRIP_CHANCE
 	 */
-	float getFluidDripChance(BlockState state, World world, BlockPos pos);
+	float getFluidDripChance(World world, DrippingFluid fluid);
 
+	/**
+	 * @return true if this fluid should cause pointed dripstone to grow downwards when placed above
+	 */
 	boolean growsDripstone(BlockState state);
 
 	/**
@@ -28,11 +34,15 @@ public interface DripstoneInteractingFluid {
 	int getParticleColor(World world, double x, double y, double z, double velocityX, double velocityY, double velocityZ);
 
 	/**
+	 * @return true if this fluid should drip into and full cauldrons.
+	 */
+	boolean fillsCauldrons(BlockState state, World world, BlockPos cauldronPos);
+
+	/**
 	 * The blockstate to set when dripstone drips this fluid into a {@link CauldronBlock}, filling it.
-	 * returning null will prevent cauldron filling.
+	 * Only called if {@link DripstoneInteractingFluid#fillsCauldrons(BlockState, World, BlockPos)} returns true.
 	 * Remember to implement {@link AbstractCauldronBlock#fillFromDripstone} if you have a custom cauldron block.
 	 */
-	@Nullable
 	BlockState getCauldronBlockState(BlockState state, World world, BlockPos cauldronPos);
 
 	/**
@@ -40,5 +50,7 @@ public interface DripstoneInteractingFluid {
 	 * @see WorldEvents#POINTED_DRIPSTONE_DRIPS_WATER_INTO_CAULDRON
 	 * @see WorldEvents#POINTED_DRIPSTONE_DRIPS_LAVA_INTO_CAULDRON
 	 */
-	int getFluidDripWorldEvent(BlockState state, World world, BlockPos cauldronPos);
+	default int getFluidDripWorldEvent(BlockState state, World world, BlockPos cauldronPos) {
+		return WorldEvents.POINTED_DRIPSTONE_DRIPS_WATER_INTO_CAULDRON;
+	}
 }

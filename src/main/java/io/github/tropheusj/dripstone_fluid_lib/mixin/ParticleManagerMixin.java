@@ -21,7 +21,7 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ParticleManager.class)
-public class ParticleManagerMixin {
+public abstract class ParticleManagerMixin {
 	@Inject(at = @At("HEAD"), method = "loadTextureList", cancellable = true)
 	private void dripstone_fluid_lib$loadTextureList(ResourceManager resourceManager, Identifier id, Map<Identifier, List<Identifier>> result, CallbackInfo ci) {
 		if (id.getPath().endsWith("_dripstone_lib_particle_type_hang")) {

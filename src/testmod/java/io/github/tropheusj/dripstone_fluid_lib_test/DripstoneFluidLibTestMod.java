@@ -3,10 +3,8 @@ package io.github.tropheusj.dripstone_fluid_lib_test;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
-import net.minecraft.block.MapColor;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
@@ -33,8 +31,8 @@ public class DripstoneFluidLibTestMod implements ModInitializer {
 			Identifier fluid = id(name + "_fluid");
 			Identifier bucket = id(name + "_bucket");
 
-			Fluid stillFluid = new Fluid.Still(name, color.getFireworkColor());
-			Fluid flowingFluid = new Fluid.Flowing(name, color.getFireworkColor());
+			TestFluid stillFluid = new TestFluid.Still(name, color.getFireworkColor());
+			TestFluid flowingFluid = new TestFluid.Flowing(name, color.getFireworkColor());
 			stillFluid.flowing = flowingFluid;
 			flowingFluid.still = stillFluid;
 

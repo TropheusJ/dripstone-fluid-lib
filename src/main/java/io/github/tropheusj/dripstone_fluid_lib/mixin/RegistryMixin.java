@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 @Mixin(Registry.class)
-public class RegistryMixin {
+public abstract class RegistryMixin {
 	@Inject(at = @At("HEAD"), method = "register(Lnet/minecraft/util/registry/Registry;Lnet/minecraft/util/Identifier;Ljava/lang/Object;)Ljava/lang/Object;")
 	private static <V, T extends V> void dripstone_fluid_lib$register(Registry<V> registry, Identifier id, T entry, CallbackInfoReturnable<T> cir) {
 		if (entry instanceof DripstoneInteractingFluid interactingFluid) {

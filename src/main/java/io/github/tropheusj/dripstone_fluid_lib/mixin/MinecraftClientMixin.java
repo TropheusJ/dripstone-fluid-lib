@@ -19,7 +19,7 @@ import net.minecraft.client.particle.ParticleManager;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
-public class MinecraftClientMixin {
+public abstract class MinecraftClientMixin {
 	@Shadow
 	@Final
 	public ParticleManager particleManager;

@@ -4,11 +4,20 @@ import java.util.Optional;
 
 import io.github.tropheusj.dripstone_fluid_lib.Constants;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.PointedDripstoneBlock.DrippingFluid;
+
+import net.minecraft.world.event.GameEvent;
+
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.At.Shift;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -30,12 +39,10 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
 
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 @Mixin(PointedDripstoneBlock.class)
 public abstract class PointedDripstoneBlockMixin {
-	@Shadow
-	private static Optional<Fluid> getFluid(World world, BlockPos pos, BlockState state) {
-		throw new RuntimeException("Mixin application failed!");
-	}
 
 	@Shadow
 	private static boolean isHeldByPointedDripstone(BlockState state, WorldView world, BlockPos pos) {
@@ -59,45 +66,57 @@ public abstract class PointedDripstoneBlockMixin {
 		throw new RuntimeException("Mixin application failed!");
 	}
 
-	/**
-	 * @reason mojank
-	 * @author Tropheus Jay
-	 */
-	@Overwrite
-	public static Fluid getDripFluid(World world, BlockPos pos) {
-		Optional<Fluid> dripFluid = getFluid(world, pos, world.getBlockState(pos));
-		return dripFluid.orElse(Fluids.EMPTY);
+	@Shadow
+	private static Optional<DrippingFluid> getFluid(World world, BlockPos pos, BlockState state) {
+		throw new RuntimeException("Mixin application failed!");
 	}
 
 	/**
-	 * @reason mojank
 	 * @author Tropheus Jay
+	 * @reason to properly handle custom fluid drip chances, requires access to multiple variables
 	 */
-	@Overwrite
 	@VisibleForTesting
+	@Overwrite
 	public static void dripTick(BlockState state, ServerWorld world, BlockPos pos, float dripChance) {
-		Fluid fluid = getDripFluid(world, pos);
-		float fluidDripChance;
-		if (fluid instanceof DripstoneInteractingFluid dripFluid) {
-			fluidDripChance = dripFluid.getFluidDripChance(state, world, pos);
-		} else if (fluid == Fluids.WATER) {
-			fluidDripChance = DripstoneInteractingFluid.WATER_DRIP_CHANCE;
-		} else if (fluid == Fluids.LAVA) {
-			fluidDripChance = DripstoneInteractingFluid.LAVA_DRIP_CHANCE;
-		} else return;
+		// removed outside if statement to handle custom fluid chances
+		if (isHeldByPointedDripstone(state, world, pos)) {
+			Optional<PointedDripstoneBlock.DrippingFluid> optional = getFluid(world, pos, state);
+			if (!optional.isEmpty()) {
+				Fluid fluid = optional.get().fluid();
+				float f;
+				if (fluid == Fluids.WATER) {
+					f = 0.17578125F;
+				} else {
+					if (fluid != Fluids.LAVA) {
+						// custom fluid chance
+						if (fluid instanceof DripstoneInteractingFluid customFluid) {
+							f = customFluid.getFluidDripChance(world, optional.get());
+						} else return;
+					}
 
-		if (dripChance <= fluidDripChance) {
-			if (isHeldByPointedDripstone(state, world, pos)) {
-				if (!(dripChance >= fluidDripChance)) {
+					f = 0.05859375F;
+				}
+
+				if (!(dripChance >= f)) {
 					BlockPos blockPos = getTipPos(state, world, pos, 11, false);
 					if (blockPos != null) {
-						BlockPos blockPos2 = getCauldronPos(world, blockPos, fluid);
-						if (blockPos2 != null) {
+						if (optional.get().sourceState().isOf(Blocks.MUD) && fluid == Fluids.WATER) {
+							BlockState blockState = Blocks.CLAY.getDefaultState();
+							world.setBlockState(optional.get().pos(), blockState);
+							Block.pushEntitiesUpBeforeBlockChange(
+									optional.get().sourceState(), blockState, world, optional.get().pos()
+							);
+							world.emitGameEvent(GameEvent.BLOCK_CHANGE, optional.get().pos(), GameEvent.Emitter.of(blockState));
 							world.syncWorldEvent(WorldEvents.POINTED_DRIPSTONE_DRIPS, blockPos, 0);
-							int i = blockPos.getY() - blockPos2.getY();
-							int j = 50 + i;
-							BlockState blockState = world.getBlockState(blockPos2);
-							world.createAndScheduleBlockTick(blockPos2, blockState.getBlock(), j);
+						} else {
+							BlockPos blockPos2 = getCauldronPos(world, blockPos, fluid);
+							if (blockPos2 != null) {
+								world.syncWorldEvent(WorldEvents.POINTED_DRIPSTONE_DRIPS, blockPos, 0);
+								int i = blockPos.getY() - blockPos2.getY();
+								int j = 50 + i;
+								BlockState blockState2 = world.getBlockState(blockPos2);
+								world.createAndScheduleBlockTick(blockPos2, blockState2.getBlock(), j);
+							}
 						}
 					}
 				}
@@ -106,7 +125,7 @@ public abstract class PointedDripstoneBlockMixin {
 	}
 
 	/**
-	 * @reason get particle effect for other fluids
+	 * @reason get particle effect for other fluids, requires access to the fluid gotten from getDripFluid
 	 * @author Tropheus Jay
 	 */
 	@Overwrite
@@ -140,9 +159,10 @@ public abstract class PointedDripstoneBlockMixin {
 		return dripstoneBlockState.isOf(Blocks.DRIPSTONE_BLOCK) && growsDripstone && fluidState.getFluidState().isStill();
 	}
 
-	// isFluidLiquid lambda in randomDisplayTick
-	@Redirect(method = "method_33270", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/PointedDripstoneBlock;isFluidLiquid(Lnet/minecraft/fluid/Fluid;)Z"))
-	private static boolean dripstone_fluid_lib$redirectFluidCheck(Fluid fluid) {
-		return fluid != null;
+	@Inject(method = "isFluidLiquid", at = @At("HEAD"), cancellable = true)
+	private static void dripstone_fluid_lib$makeCustomFluidsValid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
+		if (fluid instanceof DripstoneInteractingFluid) {
+			cir.setReturnValue(true);
+		}
 	}
 }

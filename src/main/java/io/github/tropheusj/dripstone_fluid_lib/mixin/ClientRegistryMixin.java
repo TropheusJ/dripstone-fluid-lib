@@ -15,7 +15,7 @@ import net.minecraft.util.registry.Registry;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Registry.class)
-public class ClientRegistryMixin {
+public abstract class ClientRegistryMixin {
 	@Inject(at = @At("RETURN"), method = "register(Lnet/minecraft/util/registry/Registry;Lnet/minecraft/util/Identifier;Ljava/lang/Object;)Ljava/lang/Object;")
 	private static <V, T extends V> void dripstone_fluid_lib$clientRegister(Registry<V> registry, Identifier id, T entry, CallbackInfoReturnable<T> cir) {
 		if (entry instanceof DripstoneInteractingFluid interactingFluid) {

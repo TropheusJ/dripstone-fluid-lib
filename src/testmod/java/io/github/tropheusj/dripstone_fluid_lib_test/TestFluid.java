@@ -1,6 +1,9 @@
 package io.github.tropheusj.dripstone_fluid_lib_test;
 
+import net.minecraft.block.AbstractCauldronBlock;
 import net.minecraft.block.FluidBlock;
+
+import net.minecraft.block.PointedDripstoneBlock.DrippingFluid;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
 
-public abstract class Fluid extends AbstractFluid implements DripstoneInteractingFluid {
+public abstract class TestFluid extends AbstractFluid implements DripstoneInteractingFluid {
 	public String baseName;
 	public int color;
 	public net.minecraft.fluid.Fluid still;
@@ -50,18 +53,18 @@ public abstract class Fluid extends AbstractFluid implements DripstoneInteractin
 	}
 
 	@Override
-	public float getFluidDripChance(BlockState state, World world, BlockPos pos) {
+	public float getFluidDripChance(World world, DrippingFluid fluid) {
 		return WATER_DRIP_CHANCE;
 	}
 
 	@Override
-	public @Nullable BlockState getCauldronBlockState(BlockState state, World world, BlockPos cauldronPos) {
-		return Blocks.CAULDRON.getDefaultState();
+	public boolean fillsCauldrons(BlockState state, World world, BlockPos cauldronPos) {
+		return true;
 	}
 
 	@Override
-	public int getFluidDripWorldEvent(BlockState state, World world, BlockPos cauldronPos) {
-		return WorldEvents.POINTED_DRIPSTONE_DRIPS_WATER_INTO_CAULDRON;
+	public BlockState getCauldronBlockState(BlockState state, World world, BlockPos cauldronPos) {
+		return Blocks.DIRT.getDefaultState();
 	}
 
 	@Override
@@ -74,7 +77,7 @@ public abstract class Fluid extends AbstractFluid implements DripstoneInteractin
 		return color;
 	}
 
-	public static class Flowing extends Fluid {
+	public static class Flowing extends TestFluid {
 		public Flowing(String baseName, int color) {
 			this.baseName = baseName;
 			this.color = color;
@@ -98,7 +101,7 @@ public abstract class Fluid extends AbstractFluid implements DripstoneInteractin
 		}
 	}
 
-	public static class Still extends Fluid {
+	public static class Still extends TestFluid {
 		public Still(String baseName, int color) {
 			this.baseName = baseName;
 			this.color = color;

@@ -7,9 +7,10 @@ maven {
 }
 ```
 ```groovy
-modImplimentation "io.github.tropheusj:dripstone-fluid-lib:1.2.0"
+modImplimentation(include("io.github.tropheusj:dripstone-fluid-lib:3.0.0"))
 ```
 
 ## Use
 Using this lib is as simple as implementing the `DripstoneInteractingFluid`
-interface onto your fluid class. See the javadoc for each method on use.
+interface onto your fluid class. See the javadoc for each method on use. An
+example implementation can be found in the test mod.
