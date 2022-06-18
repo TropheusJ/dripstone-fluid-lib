@@ -3,7 +3,7 @@
 ## Setup
 ```groovy
 maven {
-    url = "https://maven.devos.community/snapshots/"
+    url = "https://mvn.devos.one/snapshots/"
 }
 ```
 ```groovy
