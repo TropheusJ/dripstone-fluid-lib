@@ -2,30 +2,21 @@ package io.github.tropheusj.dripstone_fluid_lib.mixin;
 
 import java.util.Optional;
 
-import io.github.tropheusj.dripstone_fluid_lib.Constants;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.PointedDripstoneBlock.DrippingFluid;
-
-import net.minecraft.world.event.GameEvent;
-
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.google.common.annotations.VisibleForTesting;
-
+import io.github.tropheusj.dripstone_fluid_lib.Constants;
 import io.github.tropheusj.dripstone_fluid_lib.DripstoneInteractingFluid;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PointedDripstoneBlock;
+import net.minecraft.block.PointedDripstoneBlock.DrippingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.particle.ParticleEffect;
@@ -38,8 +29,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
-
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import net.minecraft.world.event.GameEvent;
 
 @Mixin(PointedDripstoneBlock.class)
 public abstract class PointedDripstoneBlockMixin {
@@ -71,17 +61,11 @@ public abstract class PointedDripstoneBlockMixin {
 		throw new RuntimeException("Mixin application failed!");
 	}
 
-	/**
-	 * @author Tropheus Jay
-	 * @reason to properly handle custom fluid drip chances, requires access to multiple variables
-	 */
-	@VisibleForTesting
-	@Overwrite
-	public static void dripTick(BlockState state, ServerWorld world, BlockPos pos, float dripChance) {
-		// removed outside if statement to handle custom fluid chances
+	@Inject(method = "dripTick", at = @At("HEAD"), cancellable = true)
+	private static void onDripTick(BlockState state, ServerWorld world, BlockPos pos, float dripChance, CallbackInfo ci) {
 		if (isHeldByPointedDripstone(state, world, pos)) {
 			Optional<PointedDripstoneBlock.DrippingFluid> optional = getFluid(world, pos, state);
-			if (!optional.isEmpty()) {
+			if (optional.isPresent()) {
 				Fluid fluid = optional.get().fluid();
 				float f;
 				if (fluid == Fluids.WATER) {
@@ -122,14 +106,12 @@ public abstract class PointedDripstoneBlockMixin {
 				}
 			}
 		}
+		ci.cancel();
 	}
 
-	/**
-	 * @reason get particle effect for other fluids, requires access to the fluid gotten from getDripFluid
-	 * @author Tropheus Jay
-	 */
-	@Overwrite
-	private static void createParticle(World world, BlockPos pos, BlockState state, Fluid fluid) {
+	@Inject(method = "createParticle(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/fluid/Fluid;)V",
+			at = @At("HEAD"), cancellable = true)
+	private static void onCreateParticle(World world, BlockPos pos, BlockState state, Fluid fluid, CallbackInfo ci) {
 		Vec3d modelOffset = state.getModelOffset(world, pos);
 		double x = pos.getX() + 0.5 + modelOffset.x;
 		double y = ((pos.getY() + 1) - 0.6875F) - 0.0625;
@@ -142,21 +124,18 @@ public abstract class PointedDripstoneBlockMixin {
 			particleEffect = dripFluid.isIn(FluidTags.LAVA) ? ParticleTypes.DRIPPING_DRIPSTONE_LAVA : ParticleTypes.DRIPPING_DRIPSTONE_WATER;
 		}
 		world.addParticle(particleEffect, x, y, z, 0.0, 0.0, 0.0);
+		ci.cancel();
 	}
 
-	/**
-	 * @reason allow fluids other than water to grow dripstone
-	 * @author Tropheus Jay
-	 */
-	@Overwrite
-	private static boolean canGrow(BlockState dripstoneBlockState, BlockState fluidState) {
+	@Inject(method = "canGrow(Lnet/minecraft/block/BlockState;Lnet/minecraft/block/BlockState;)Z", at = @At("HEAD"), cancellable = true)
+	private static void onCanGrow(BlockState dripstoneBlockState, BlockState fluidState, CallbackInfoReturnable<Boolean> cir) {
 		Fluid fluid = fluidState.getFluidState().getFluid();
 		boolean growsDripstone = fluidState.isOf(Blocks.WATER);
 		if (fluid instanceof DripstoneInteractingFluid interactingFluid) {
 			growsDripstone = interactingFluid.growsDripstone(fluidState);
 		}
 
-		return dripstoneBlockState.isOf(Blocks.DRIPSTONE_BLOCK) && growsDripstone && fluidState.getFluidState().isStill();
+		cir.setReturnValue(dripstoneBlockState.isOf(Blocks.DRIPSTONE_BLOCK) && growsDripstone && fluidState.getFluidState().isStill());
 	}
 
 	@Inject(method = "isFluidLiquid", at = @At("HEAD"), cancellable = true)
