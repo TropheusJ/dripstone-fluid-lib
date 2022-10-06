@@ -31,7 +31,7 @@ import net.minecraft.world.WorldEvents;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.event.GameEvent;
 
-@Mixin(PointedDripstoneBlock.class)
+@Mixin(value = PointedDripstoneBlock.class, priority = 1200)
 public abstract class PointedDripstoneBlockMixin {
 
 	@Shadow
