@@ -8,9 +8,10 @@ import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,10 +45,10 @@ public class DripstoneFluidLibTestMod implements ModInitializer {
 			stillFluid.bucket = bucketItem;
 			flowingFluid.bucket = bucketItem;
 
-			STILL.put(still, Registry.register(Registry.FLUID, still, stillFluid));
-			FLOWING.put(flowing, Registry.register(Registry.FLUID, flowing, flowingFluid));
-			FLUID.put(fluid, Registry.register(Registry.BLOCK, fluid, block));
-			BLUCKET.put(bucket, Registry.register(Registry.ITEM, bucket, bucketItem));
+			STILL.put(still, Registry.register(Registries.FLUID, still, stillFluid));
+			FLOWING.put(flowing, Registry.register(Registries.FLUID, flowing, flowingFluid));
+			FLUID.put(fluid, Registry.register(Registries.BLOCK, fluid, block));
+			BLUCKET.put(bucket, Registry.register(Registries.ITEM, bucket, bucketItem));
 		}
 	}
 

@@ -7,6 +7,7 @@ import io.github.tropheusj.dripstone_fluid_lib.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.PointedDripstoneBlock.DrippingFluid;
 
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.world.event.GameEvent;
 
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +28,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -111,7 +111,7 @@ public abstract class PointedDripstoneBlockMixin {
 								int i = blockPos.getY() - blockPos2.getY();
 								int j = 50 + i;
 								BlockState blockState2 = world.getBlockState(blockPos2);
-								world.createAndScheduleBlockTick(blockPos2, blockState2.getBlock(), j);
+								world.scheduleBlockTick(blockPos2, blockState2.getBlock(), j);
 							}
 						}
 					}

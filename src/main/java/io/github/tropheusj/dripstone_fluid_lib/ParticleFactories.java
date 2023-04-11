@@ -5,26 +5,28 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.BlockLeakParticle;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFactory;
+import net.minecraft.client.particle.SpriteBillboardParticle;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.particle.WaterSplashParticle;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.particle.DefaultParticleType;
 
 @Environment(EnvType.CLIENT)
 public class ParticleFactories {
-	public static class DrippingDripstoneFluidFactory extends BlockLeakParticle.FallingDripstoneWaterFactory {
-		private final DripstoneInteractingFluid fluid;
-
-		public DrippingDripstoneFluidFactory(SpriteProvider spriteProvider, DripstoneInteractingFluid fluid) {
-			super(spriteProvider);
-			this.fluid = fluid;
-		}
-
+	/**
+	 * {@link BlockLeakParticle#createDrippingDripstoneWater(DefaultParticleType, ClientWorld, double, double, double, double, double, double)}
+	 */
+	public record DrippingDripstoneFluidFactory(DripstoneInteractingFluid fluid)
+			implements ParticleFactory.BlockLeakParticleFactory<DefaultParticleType> {
 		@Override
-		public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-			BlockLeakParticle particle = new BlockLeakParticle.Dripping(clientWorld, x, y, z, Fluids.WATER, Constants.FLUIDS_TO_PARTICLES.get(fluid).fall());
-			particle.setSprite(this.spriteProvider);
+		public SpriteBillboardParticle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld,
+													  double x, double y, double z,
+													  double velocityX, double velocityY, double velocityZ) {
+			BlockLeakParticle particle = new BlockLeakParticle.Dripping(
+					clientWorld, x, y, z, (Fluid) fluid, Constants.FLUIDS_TO_PARTICLES.get(fluid).fall()
+			);
 			int color = fluid.getParticleColor(clientWorld, x, y, z, velocityX, velocityY, velocityZ);
 			float r = (color >> 16 & 255) / 255f;
 			float g = (color >> 8 & 255) / 255f;
@@ -34,19 +36,15 @@ public class ParticleFactories {
 		}
 	}
 
-	public static class FallingDripstoneFluidFactory extends BlockLeakParticle.DripstoneLavaSplashFactory {
-		private final DripstoneInteractingFluid fluid;
-
-		public FallingDripstoneFluidFactory(SpriteProvider spriteProvider, DripstoneInteractingFluid fluid) {
-			super(spriteProvider);
-			this.fluid = fluid;
-		}
-
+	public record FallingDripstoneFluidFactory(DripstoneInteractingFluid fluid)
+			implements ParticleFactory.BlockLeakParticleFactory<DefaultParticleType> {
 		@Override
-		public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-			BlockLeakParticle particle = new BlockLeakParticle.DripstoneLavaDrip(clientWorld, x, y, z, Fluids.WATER,
-					Constants.FLUIDS_TO_PARTICLES.get(fluid).splash());
-			particle.setSprite(this.spriteProvider);
+		public SpriteBillboardParticle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld,
+													  double x, double y, double z,
+													  double velocityX, double velocityY, double velocityZ) {
+			BlockLeakParticle particle = new BlockLeakParticle.DripstoneLavaDrip(
+					clientWorld, x, y, z, (Fluid) fluid, Constants.FLUIDS_TO_PARTICLES.get(fluid).splash()
+			);
 			int color = fluid.getParticleColor(clientWorld, x, y, z, velocityX, velocityY, velocityZ);
 			float r = (color >> 16 & 255) / 255f;
 			float g = (color >> 8 & 255) / 255f;
@@ -65,7 +63,9 @@ public class ParticleFactories {
 		}
 
 		@Override
-		public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+		public Particle createParticle(DefaultParticleType defaultParticleType, ClientWorld clientWorld,
+									   double x, double y, double z,
+									   double velocityX, double velocityY, double velocityZ) {
 			WaterSplashParticle particle = new DripstoneFluidParticle(clientWorld, x, y, z, velocityX, velocityY, velocityZ);
 			particle.setSprite(((WaterSplashParticle$SplashFactoryAccessor) this).dripstone_fluid_lib$spriteProvider());
 			int color = fluid.getParticleColor(clientWorld, x, y, z, velocityX, velocityY, velocityZ);

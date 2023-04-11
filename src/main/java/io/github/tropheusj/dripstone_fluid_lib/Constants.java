@@ -13,13 +13,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class Constants {
-	public static final List<Identifier> DRIP_HANG = ImmutableList.of(new Identifier("minecraft", "particle/drip_hang"));
-	public static final List<Identifier> DRIP_FALL = ImmutableList.of(new Identifier("minecraft", "particle/drip_fall"));
+	public static final List<Identifier> DRIP_HANG = ImmutableList.of(new Identifier("minecraft", "drip_hang"));
+	public static final List<Identifier> DRIP_FALL = ImmutableList.of(new Identifier("minecraft", "drip_fall"));
 	public static final List<Identifier> SPLASH = ImmutableList.of(
-			new Identifier("dripstone_fluid_lib", "particle/splash_0"),
-			new Identifier("dripstone_fluid_lib", "particle/splash_1"),
-			new Identifier("dripstone_fluid_lib", "particle/splash_2"),
-			new Identifier("dripstone_fluid_lib", "particle/splash_3")
+			new Identifier("dripstone_fluid_lib", "splash_0"),
+			new Identifier("dripstone_fluid_lib", "splash_1"),
+			new Identifier("dripstone_fluid_lib", "splash_2"),
+			new Identifier("dripstone_fluid_lib", "splash_3")
 	);
 
 	public static final Map<DripstoneInteractingFluid, ParticleTypeSet> FLUIDS_TO_PARTICLES = new HashMap<>();

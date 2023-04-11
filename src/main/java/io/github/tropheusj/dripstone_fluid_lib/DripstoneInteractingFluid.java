@@ -2,8 +2,6 @@ package io.github.tropheusj.dripstone_fluid_lib;
 
 import net.minecraft.block.PointedDripstoneBlock.DrippingFluid;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.block.AbstractCauldronBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CauldronBlock;

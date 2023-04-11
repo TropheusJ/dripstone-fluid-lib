@@ -13,11 +13,6 @@
   "license": "MIT",
   "icon": "assets/dripstone_fluid_lib/icon.png",
   "environment": "*",
-  "entrypoints": {
-    "client": [
-      "io.github.tropheusj.dripstone_fluid_lib.DripstoneFluidLibClient"
-    ]
-  },
   "mixins": [
     "dripstone_fluid_lib.mixins.json"
   ],
