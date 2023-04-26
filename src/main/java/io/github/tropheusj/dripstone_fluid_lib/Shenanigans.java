@@ -20,6 +20,7 @@ public class Shenanigans {
 		try {
 			clazz = Class.forName(mapped);
 			constructor = clazz.getDeclaredConstructor(Identifier.class, Optional.class);
+			constructor.setAccessible(true);
 		} catch (ClassNotFoundException | NoSuchMethodException e) {
 			throw new RuntimeException("DripstoneFluidLib: Could not set up particle sprites", e);
 		}
