@@ -21,7 +21,6 @@ public interface ClientRegistryMixin {
 	private static <V, T extends V> void dripstone_fluid_lib$clientRegister(Registry<V> registry, Identifier id, T entry, CallbackInfoReturnable<T> cir) {
 		if (entry instanceof DripstoneInteractingFluid interactingFluid) {
 			Constants.TO_REGISTER.add(interactingFluid);
-			System.out.println("toRegister " + id);
 		}
 	}
 }

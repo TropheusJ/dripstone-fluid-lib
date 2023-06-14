@@ -31,7 +31,6 @@ public interface RegistryMixin {
 					new Identifier(id.getNamespace(), id.getPath() + "_dripstone_lib_particle_type_splash"),
 					FabricParticleTypes.simple());
 			Constants.FLUIDS_TO_PARTICLES.put(interactingFluid, new ParticleTypeSet(hang, fall, splash));
-			System.out.println("particled " + id);
 		}
 	}
 }

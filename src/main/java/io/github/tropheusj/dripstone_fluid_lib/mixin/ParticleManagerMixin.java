@@ -49,7 +49,6 @@ public abstract class ParticleManagerMixin {
 				modifiableResults.add(Shenanigans.createReloadResult(id, sprites));
 			}
 		});
-		System.out.println(modifiableResults);
 		modifiableResults.forEach(consumer);
 	}
 }

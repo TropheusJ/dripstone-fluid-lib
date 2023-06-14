@@ -29,7 +29,6 @@ public abstract class MinecraftClientMixin {
 	@Inject(at = @At(value = "INVOKE", shift = At.Shift.BY, by = 2, target = "Lnet/minecraft/client/particle/ParticleManager;<init>(Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/client/texture/TextureManager;)V"), method = "<init>")
 	private void dripstone_fluid_lib$handleParticles(RunArgs args, CallbackInfo ci) {
 		Constants.TO_REGISTER.forEach(fluid -> {
-			System.out.println("handled particles");
 			ParticleTypeSet particles = Constants.FLUIDS_TO_PARTICLES.get(fluid);
 			ParticleManagerAccessor access = (ParticleManagerAccessor) particleManager;
 			access.callRegisterBlockLeakFactory(particles.hang(), new DrippingDripstoneFluidFactory(fluid));
